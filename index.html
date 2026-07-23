@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorting Algorithm Visualizer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-gradient"></div>
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loader">
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+      <div class="loader-bar"></div>
+    </div>
+    <p class="loading-text">Preparing Visualizer...</p>
+  </div>
+
+  <div class="app" id="app">
+    <header class="header">
+      <div class="header-content">
+        <div class="header-top">
+          <div>
+            <h1 class="title">Sorting Algorithm Visualizer</h1>
+            <p class="subtitle">Visualize how different sorting algorithms work in real time.</p>
+          </div>
+          <div class="header-actions">
+            <button class="icon-btn" id="themeToggle" title="Toggle Theme (T)">
+              <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button class="icon-btn" id="soundToggle" title="Toggle Sound (M)">
+              <svg class="sound-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              <svg class="sound-off-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            </button>
+            <button class="icon-btn" id="screenshotBtn" title="Take Screenshot">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="controls-bar glass-card" id="controlsBar">
+        <div class="controls-row">
+          <div class="control-group">
+            <label>Algorithm</label>
+            <select id="algorithmSelect">
+              <option value="bubble">Bubble Sort</option>
+              <option value="selection">Selection Sort</option>
+              <option value="insertion">Insertion Sort</option>
+              <option value="merge">Merge Sort</option>
+              <option value="quick">Quick Sort</option>
+              <option value="heap">Heap Sort</option>
+              <option value="shell">Shell Sort</option>
+              <option value="counting">Counting Sort</option>
+              <option value="radix">Radix Sort</option>
+              <option value="bucket">Bucket Sort</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label>Array Type</label>
+            <select id="arrayTypeSelect">
+              <option value="random">Random</option>
+              <option value="nearly">Nearly Sorted</option>
+              <option value="reversed">Reversed</option>
+              <option value="fewUnique">Few Unique</option>
+            </select>
+          </div>
+          <div class="control-group slider-group">
+            <label>Size: <span id="sizeValue">50</span></label>
+            <input type="range" id="sizeSlider" min="5" max="200" value="50">
+          </div>
+          <div class="control-group slider-group">
+            <label>Speed: <span id="speedValue">50</span></label>
+            <input type="range" id="speedSlider" min="1" max="100" value="50">
+          </div>
+        </div>
+        <div class="controls-row">
+          <div class="btn-group">
+            <button class="btn btn-primary" id="startBtn" title="Start (S)">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Start
+            </button>
+            <button class="btn btn-warning" id="pauseBtn" title="Pause (Space)" disabled>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+              Pause
+            </button>
+            <button class="btn btn-warning" id="resumeBtn" title="Resume" disabled>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Resume
+            </button>
+            <button class="btn btn-success" id="stepBtn" title="Step Forward" disabled>
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19" stroke="currentColor" stroke-width="2"/></svg>
+              Step
+            </button>
+            <button class="btn btn-danger" id="resetBtn" title="Reset (R)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+              Reset
+            </button>
+            <button class="btn btn-accent" id="newArrayBtn" title="New Array (N)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Array
+            </button>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-outline" id="customArrayBtn" title="Custom Array">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              Custom
+            </button>
+            <button class="btn btn-outline" id="exportBtn" title="Export Stats as JSON">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-area">
+        <div class="visualization-panel">
+          <div class="visualizer-container glass-card" id="visualizerContainer">
+            <canvas id="visualizerCanvas"></canvas>
+            <div class="canvas-label" id="canvasLabel">Bubble Sort</div>
+          </div>
+
+        </div>
+
+        <div class="sidebar">
+          <div class="explanation-card glass-card">
+            <h3>Algorithm Info</h3>
+            <div class="explanation-content" id="explanationContent">
+              <p class="exp-what" id="expWhat"></p>
+              <div class="exp-section"><h4>Use Cases</h4><ul id="expUses"></ul></div>
+              <div class="exp-section"><h4>Advantages</h4><ul id="expPros"></ul></div>
+              <div class="exp-section"><h4>Disadvantages</h4><ul id="expCons"></ul></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="keyboard-hints glass-card">
+        <span><kbd>Space</kbd> Start/Pause</span>
+        <span><kbd>R</kbd> Reset</span>
+        <span><kbd>N</kbd> New Array</span>
+        <span><kbd>S</kbd> Start</span>
+        <span><kbd>T</kbd> Theme</span>
+        <span><kbd>M</kbd> Mute</span>
+        <span><kbd>←→</kbd> Step</span>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal hidden" id="customArrayModal">
+    <div class="modal-content glass-card">
+      <h3>Custom Array</h3>
+      <p>Enter comma-separated numbers (e.g. 5, 3, 8, 1, 9)</p>
+      <textarea id="customArrayInput" rows="3" placeholder="5, 3, 8, 1, 9, 2, 7, 4, 6, 10"></textarea>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="customArrayApply">Apply</button>
+        <button class="btn btn-outline" id="customArrayCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
